@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.optimize as opt
-from .avogadro_parser import read_file, write_file
-
+from avogadro_parser import read_file, write_file
+from leapfrog   import leapfrog_solve
 
 def rosenbrock(x): # Function розенброка
     return(1.0 - x[0])**2 + 100.0*(x[1]-x[0]*x[0])**2
@@ -90,4 +90,14 @@ xs = np.linspace(1, 0, n_atoms)
 a = result.x
 a.sort()
 plt.scatter(a, [0] * len(a), marker="o")
-plt.show()
+# plt.show()
+
+print(f"RES: {result.final_simplex}")
+# putis = x_coord
+# print(len(putis))
+# print(f"Previous x: {putis}")
+# xn, un = leapfrog_solve(
+#     r0 = putis, iterations=1000, capture_every_nth_iteration=200
+# )
+# for i in range(len(xn)):
+#     print(f"{i} --- {xn[i]}; u = {un[i]}")
