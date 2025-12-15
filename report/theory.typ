@@ -94,18 +94,14 @@ $ q(E, x) = 2[E - U(x)] $
 
 Для нахождения квантовомеханических средних $⟨p_x⟩$ и $⟨p_x^2⟩$ вспомним, что
 
-$hat(p) = -i ℏ ∇$,
+$ hat(p) = -i ℏ ∇ $ ,
 
-где $∇ = frac(∂, ∂x) vec(i) + frac(∂, ∂y) vec(j) + frac(∂, ∂z) vec(k)$
+где $ ∇ = frac(∂, ∂x) vec(i) + frac(∂, ∂y) vec(j) + frac(∂, ∂z) vec(k) $
 
-$hat(p) = -i ℏ frac(∂, ∂x)$.
+$ hat(p) = -i ℏ frac(∂, ∂x) $ .
 
 Отсюда
 
-$⟨p_x⟩ = limits(integral)(-L)^(L) ψ(x) hat(p_x) ψ(x) d x =$
+$ ⟨p_x⟩ = limits(integral)(-L)^(L) ψ(x) hat(p_x) ψ(x) d x = -i ℏ limits(integral)(-L)^(L) ψ(x) frac(∂ψ(x),∂x) d x = $
 
-$ -i ℏ limits(integral)(-L)^(L) ψ(x) frac(∂ψ(x),∂x) d x =$
-
-$-i ℏ limits(integral)(-L)^(L) ψ(x) d ψ(x) =$
-
-$- i ℏ limits(integral)(ψ(-L))^(ψ(L)) x d x = -i ℏ limits(integral)(0)^(0) x d x = 0$.
+$ -i ℏ limits(integral)(-L)^(L) ψ(x) d ψ(x) = - i ℏ limits(integral)(ψ(-L))^(ψ(L)) x d x = -i ℏ limits(integral)(0)^(0) x d x = 0 $.
