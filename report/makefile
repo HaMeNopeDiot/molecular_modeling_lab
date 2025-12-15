@@ -9,3 +9,8 @@ all:
 	echo "\end{document}" >> $(OUT)
 	pdflatex $(OUT) $(PDFNAME)
 	rm *.log *.aux
+
+
+typst:
+	typst compile main.typ
+	open main.pdf
