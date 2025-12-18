@@ -21,7 +21,7 @@ def create_graph(atoms, iteration):
     # Режим отображения: белый на черном (Фон)
     dislin.scrmod ('revers') # 'norev' 'auto' 'revers'
     # Вывод
-    dislin.metafl ('png') # 'pdf' 'png' 'cons'
+    dislin.metafl ('pdf') # 'pdf' 'png' 'cons'
     # Инициализация DISLIN
     dislin.disini ()
     # Рисование рамки вокруг страницы
@@ -31,39 +31,31 @@ def create_graph(atoms, iteration):
     # Включение освещения для 3D-объектов
     dislin.light ('on')
     # Настройка материала: слабое зеркальное отражение
-    dislin.matop3 (0.02, 0.02, 0.02, 'diffuse') # 'diffuse' 'ambient' 'specular' 'emission'
+    dislin.matop3 (0.02, 0.02, 0.02, 'specular')
 
     # Отключение отсечения в 3D
     dislin.clip3d ('none')
     # Позиция и размер системы координат
     dislin.axspos (200, 2500)
-    dislin.axslen (1800, 1800)
+    dislin.axslen (1600, 1600)
     dislin.nograf()
 
     # Автоматическое определение количества цифр в метках осей
     # dislin.labdig (-1, 'xyz')
     # Горизонтальное расположение меток осей
     # dislin.labl3d ('hori')
-    # Определение диапазонов осей: X(0-30), Y(0-30), Z(0-30) с шагом 5
     dislin.graf3d (-2., 2., 0., 0.5, -2., 2., 0., 0.5, -2., 2., 0., 0.5)
-    # Отображение заголовка
-    #dislin.title ()
 
-    # 'smooth' 'flat' 'none' / 'surface' 'lines' 'border'
-    # Режим сглаженного затенения поверхностей
     dislin.shdmod ('smooth', 'surface')
 
-    # Начало записи в Z-буфер (для правильного отображения 3D)
     iret = dislin.zbfini()
-    # Настройка красного диффузного материала
     dislin.matop3 (1.0, 0.0, 0.0, 'diffuse')
-    # Создание 17 красных сфер радиусом 2.0 с 50x25
+    
 
     for i in range (0, len(atoms[0])):
         dislin.sphe3d (atoms[iteration][i].x, atoms[iteration][i].y, atoms[iteration][i].z, 0.25, 50, 25)        
 
-    # Настройка 2 диффузного материала
-    dislin.matop3 (0.0, 1.0, 0.0, 'diffuse')
+
 
     # Завершение работы с Z-буфером
     dislin.zbffin ()
@@ -74,20 +66,45 @@ def create_graph(atoms, iteration):
 
 from pathlib import Path
 import shutil
-
+from pdf2image import convert_from_path
 from png2mp4 import images_to_video
+
+def pdf_to_png(pdf_path, output_path, page_number=0, dpi=200):
+    """
+    Конвертирует одну страницу PDF в PNG
+    
+    Args:
+        pdf_path: путь к PDF файлу
+        output_path: путь для сохранения PNG
+        page_number: номер страницы (начиная с 0)
+        dpi: качество изображения
+    """
+    # Конвертируем PDF в список изображений
+    images = convert_from_path(pdf_path, dpi=dpi)
+    
+    # Проверяем, существует ли запрашиваемая страница
+    if page_number < len(images):
+        # Сохраняем нужную страницу
+        images[page_number].save(output_path, 'PNG')
+        print(f"Страница {page_number+1} сохранена как {output_path}")
+    else:
+        print(f"Страница {page_number+1} не существует в PDF")
+    
+    return len(images)
 
 for i in range(len(atoms)):
     create_graph(atoms, i)
-    source = Path('dislin.png')
+    source = Path('dislin.pdf')
     srt_i = str(i)
     while len(srt_i) < 4:
         srt_i = "0" + srt_i
-    destination = Path(f"pct/dislin_{srt_i}.png")
+    destination = Path(f"pdf_dir/dislin_{srt_i}.pdf")
     # Создаём целевую директорию, если её нет
     destination.parent.mkdir(parents=True, exist_ok=True)
     # Перемещаем файл
     shutil.move(str(source), str(destination))
+
+    pdf_to_png(destination, Path(f"pct/dislin_{srt_i}.png"))    
 
 images_to_video(image_folder="pct", output_video="result.mp4", fps=20)
     
