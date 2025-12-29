@@ -68,6 +68,7 @@ from pathlib import Path
 import shutil
 from pdf2image import convert_from_path
 from png2mp4 import images_to_video
+import os
 
 def pdf_to_png(pdf_path, output_path, page_number=0, dpi=200):
     """
@@ -91,6 +92,9 @@ def pdf_to_png(pdf_path, output_path, page_number=0, dpi=200):
         print(f"Страница {page_number+1} не существует в PDF")
     
     return len(images)
+
+if not os.path.exists("pct"):
+        os.makedirs("pct")
 
 for i in range(len(atoms)):
     create_graph(atoms, i)
